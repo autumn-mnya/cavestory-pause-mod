@@ -2,6 +2,7 @@
 /.vs
 /Debug
 /Release
+/ZZ-FinalRelease
 mod.vcxproj.user
 *.exp
 *.lib
