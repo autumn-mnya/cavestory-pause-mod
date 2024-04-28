@@ -20,6 +20,7 @@ typedef Option** (*GetOptionMenuFunc)();
 typedef size_t* (*GetNumEntriesAddedMainFunc)();
 typedef size_t* (*GetNumEntriesAddedMenuFunc)();
 typedef void (*add_pause_entryFunc)(Option**,const char*,int(*)(OptionsMenu*,size_t,CallbackAction),void*,const char*,long,BOOL,size_t*);
+typedef int (*EnterOptionsMenuFunc)(OptionsMenu*,size_t);
 
 Option** GetOptionsMain()
 {
@@ -88,4 +89,18 @@ void add_pause_entry(Option** options_ptr, const char* name, int (*callback)(Opt
     }
 
     func(options_ptr, name, callback, user_data, value_string, value, disabled, num_entries_added);
+}
+
+int EnterOptionsMenu(OptionsMenu* options_menu, size_t selected_option)
+{
+    EnterOptionsMenuFunc func = reinterpret_cast<EnterOptionsMenuFunc>(
+        GetProcAddress(pauseDLL, "EnterOptionsMenu"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for EnterOptionsMenu\n";
+        return NULL;
+    }
+
+    int val = func(options_menu, selected_option);
+    return val;
 }
