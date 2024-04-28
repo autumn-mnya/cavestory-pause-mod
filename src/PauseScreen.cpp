@@ -60,6 +60,26 @@ Option *options_menu_o = NULL;
 size_t num_entries_added_main = 0;
 size_t num_entries_added_menu = 0;
 
+Option** GetOptionsMain()
+{
+	return &options_main;
+}
+
+Option** GetOptionsMenu()
+{
+	return &options_menu_o;
+}
+
+size_t* GetNumEntriesAddedMain()
+{
+	return &num_entries_added_main;
+}
+
+size_t* GetNumEntriesAddedMenu()
+{
+	return &num_entries_added_menu;
+}
+
 void add_pause_entry(Option** options_ptr, const char* name, int (*callback)(OptionsMenu* parent_menu, size_t this_option, CallbackAction action), void* user_data, const char* value_string, long value, BOOL disabled, size_t* num_entries_added) {
 	// Increase the count of entries added
 	(*num_entries_added)++;
