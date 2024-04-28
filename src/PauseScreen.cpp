@@ -109,7 +109,7 @@ ConfigData* GetConf()
 	return &pause_conf;
 }
 
-static int EnterOptionsMenu(OptionsMenu* options_menu, size_t selected_option)
+int EnterOptionsMenu(OptionsMenu* options_menu, size_t selected_option)
 {
 	int scroll = 0;
 

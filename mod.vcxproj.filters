@@ -3,22 +3,17 @@
   <ItemGroup>
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\\mod_loader.cpp" />
-    <ClCompile Include="src\lua\Lua.cpp">
-      <Filter>lua</Filter>
-    </ClCompile>
+    <ClCompile Include="src\AutPI.cpp" />
+    <ClCompile Include="src\Config.cpp" />
+    <ClCompile Include="src\PauseScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cave_story.h" />
     <ClInclude Include="src\Main.h" />
     <ClInclude Include="src\\mod_loader.h" />
     <ClInclude Include="src\\mod_loader_hooks.h" />
-    <ClInclude Include="src\lua\Lua.h">
-      <Filter>lua</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Filter Include="lua">
-      <UniqueIdentifier>{57686e76-e1cd-4528-8583-6d018c5f16bb}</UniqueIdentifier>
-    </Filter>
+    <ClInclude Include="src\AutPI.h" />
+    <ClInclude Include="src\Config.h" />
+    <ClInclude Include="src\PauseScreen.h" />
   </ItemGroup>
 </Project>
