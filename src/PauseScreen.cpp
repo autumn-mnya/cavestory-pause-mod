@@ -12,6 +12,7 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 #include "Config.h"
+#include <vector>
 
 #define MAX_OPTIONS ((WINDOW_HEIGHT / 20) - 4)	// The maximum number of options we can fit on-screen at once
 
@@ -107,6 +108,21 @@ ConfigData pause_conf;
 ConfigData* GetConf()
 {
 	return &pause_conf;
+}
+
+std::vector<SaveConfigElementHandler> saveconfigElementHandlers;
+
+void RegisterSaveConfigElement(SaveConfigElementHandler handler)
+{
+	saveconfigElementHandlers.push_back(handler);
+}
+
+void ExecuteSaveConfigElementHandlers()
+{
+	for (const auto& handler : saveconfigElementHandlers)
+	{
+		handler();
+	}
 }
 
 int EnterOptionsMenu(OptionsMenu* options_menu, size_t selected_option)
@@ -360,6 +376,7 @@ static int Callback_Options(OptionsMenu* parent_menu, size_t this_option, Callba
 	PlaySoundObject(5, SOUND_MODE_PLAY);
 
 	SaveConfigData(GetConf());
+	ExecuteSaveConfigElementHandlers(); // execute save config handlers for modders to save their configs at the same time as this dll
 
 	return return_value;
 }

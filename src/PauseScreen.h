@@ -55,6 +55,8 @@ typedef struct Option
 	const char* value_string;
 	long value;
 	BOOL disabled;
+	long attribute_size;
+	long attribute_index;
 } Option;
 
 typedef struct OptionsMenu
@@ -71,11 +73,14 @@ extern Option* options_main;
 extern size_t num_entries_added_main;
 extern size_t num_entries_added_menu;
 
+typedef void (*SaveConfigElementHandler)();
+
 extern "C" __declspec(dllexport) Option** GetOptionsMain();
 extern "C" __declspec(dllexport) Option** GetOptionsMenu();
 extern "C" __declspec(dllexport) size_t* GetNumEntriesAddedMain();
 extern "C" __declspec(dllexport) size_t* GetNumEntriesAddedMenu();
 extern "C" __declspec(dllexport) void add_pause_entry(Option** options_ptr, const char* name, int (*callback)(OptionsMenu* parent_menu, size_t this_option, CallbackAction action), void* user_data, const char* value_string, long value, BOOL disabled, size_t* num_entries_added);
+extern "C" __declspec(dllexport) void RegisterSaveConfigElement(SaveConfigElementHandler handler);
 extern "C" __declspec(dllexport) int EnterOptionsMenu(OptionsMenu * options_menu, size_t selected_option);
 
 void InitPauseScreen();
