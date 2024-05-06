@@ -14,6 +14,8 @@
 #include "Config.h"
 #include <vector>
 
+#include "API_Lang.h"
+
 #define MAX_OPTIONS ((WINDOW_HEIGHT / 20) - 4)	// The maximum number of options we can fit on-screen at once
 
 #define MIN(a, b) ((a) < (b) ? (a) : (b))
@@ -272,7 +274,7 @@ static int Callback_Resolution(OptionsMenu* parent_menu, size_t this_option, Cal
 {
 	ConfigData* conf = (ConfigData*)parent_menu->options[this_option].user_data;
 
-	const char* strings[] = { setting_pausetext_windowsize_a, setting_pausetext_windowsize_b, setting_pausetext_windowsize_c, setting_pausetext_windowsize_d, setting_pausetext_windowsize_e };
+	const char* strings[] = { GetLangString_Char("pausemenu_options_windowsize_a", setting_pausetext_windowsize_a), GetLangString_Char("pausemenu_options_windowsize_b", setting_pausetext_windowsize_b), GetLangString_Char("pausemenu_options_windowsize_c", setting_pausetext_windowsize_c), GetLangString_Char("pausemenu_options_windowsize_d", setting_pausetext_windowsize_d), GetLangString_Char("pausemenu_options_windowsize_e", setting_pausetext_windowsize_e) };
 
 	switch (action)
 	{
@@ -289,7 +291,7 @@ static int Callback_Resolution(OptionsMenu* parent_menu, size_t this_option, Cal
 		case ACTION_LEFT:
 		case ACTION_RIGHT:
 			restart_required = TRUE;
-			parent_menu->subtitle = setting_pausetext_restart_required;
+			parent_menu->subtitle = GetLangString_Char("pausemenu_restart_required", setting_pausetext_restart_required);
 
 			if (action == ACTION_LEFT)
 			{
@@ -310,6 +312,10 @@ static int Callback_Resolution(OptionsMenu* parent_menu, size_t this_option, Cal
 			break;
 
 		case ACTION_UPDATE:
+			if (restart_required == TRUE)
+				parent_menu->subtitle = GetLangString_Char("pausemenu_restart_required", setting_pausetext_restart_required);
+
+			parent_menu->options[this_option].value_string = strings[parent_menu->options[this_option].value];
 			break;
 	}
 
@@ -320,7 +326,7 @@ static int Callback_ControllerEnabled(OptionsMenu* parent_menu, size_t this_opti
 {
 	ConfigData* conf = (ConfigData*)parent_menu->options[this_option].user_data;
 
-	const char* strings[] = { setting_pausetext_disabled, setting_pausetext_enabled };
+	const char* strings[] = { GetLangString_Char("pausemenu_disabled", setting_pausetext_disabled), GetLangString_Char("pausemenu_enabled", setting_pausetext_enabled) };
 
 	switch (action)
 	{
@@ -347,6 +353,7 @@ static int Callback_ControllerEnabled(OptionsMenu* parent_menu, size_t this_opti
 		break;
 
 	case ACTION_UPDATE:
+		parent_menu->options[this_option].value_string = strings[parent_menu->options[this_option].value];
 		break;
 	}
 
@@ -361,8 +368,8 @@ static int Callback_Options(OptionsMenu* parent_menu, size_t this_option, Callba
 		return CALLBACK_CONTINUE;
 
 	OptionsMenu options_menu = {
-		setting_pausetext_menu_options,
-		restart_required ? setting_pausetext_restart_required : NULL,
+		GetLangString_Char("pausemenu_options_menu", setting_pausetext_menu_options),
+		restart_required ? GetLangString_Char("pausemenu_restart_required", setting_pausetext_restart_required) : NULL,
 		options_menu_o,
 		num_entries_added_menu,
 		-70,
@@ -413,13 +420,13 @@ static int PromptAreYouSure(void)
 	};
 
 	Option options[] = {
-		{setting_pausetext_yes, FunctionHolder::Callback_Yes, NULL, NULL, 0, FALSE},
-		{setting_pausetext_no, FunctionHolder::Callback_No, NULL, NULL, 0, FALSE}
+		{GetLangString_Char("pausemenu_yes", setting_pausetext_yes), FunctionHolder::Callback_Yes, NULL, NULL, 0, FALSE},
+		{GetLangString_Char("pausemenu_no", setting_pausetext_no), FunctionHolder::Callback_No, NULL, NULL, 0, FALSE}
 	};
 
 	OptionsMenu options_menu = {
-		setting_pausetext_are_you_sure,
-		setting_pausetext_unsaved_progress,
+		GetLangString_Char("pausemenu_are_you_sure", setting_pausetext_are_you_sure),
+		GetLangString_Char("pausemenu_unsaved_progress", setting_pausetext_unsaved_progress),
 		options,
 		sizeof(options) / sizeof(options[0]),
 		-10,
@@ -492,24 +499,50 @@ static int Callback_Quit(OptionsMenu* parent_menu, size_t this_option, CallbackA
 	return return_value;
 }
 
+void ReloadOptionMenuNames(Option* options, size_t total_options, const char** names)
+{
+	for (size_t i = 0; i < total_options; ++i) {
+		options[i].name = names[i];
+	}
+}
+
+
+const char* mainMenuNames[] = {
+	GetLangString_Char("pausemenu_resume", setting_pausetext_resume),
+	GetLangString_Char("pausemenu_reset", setting_pausetext_reset),
+	GetLangString_Char("pausemenu_options", setting_pausetext_options),
+	GetLangString_Char("pausemenu_quit", setting_pausetext_quit)
+};
+
+const char* menuONames[] = {
+	GetLangString_Char("pausemenu_options_resolution", setting_pausetext_resolution),
+	GetLangString_Char("pausemenu_options_gamepad_enabled", setting_pausetext_gamepad_enabled)
+};
+
+void ReloadOptionsMenuDefault()
+{
+	ReloadOptionMenuNames(options_main, sizeof(mainMenuNames) / sizeof(mainMenuNames[0]), mainMenuNames);
+	ReloadOptionMenuNames(options_menu_o, sizeof(menuONames) / sizeof(menuONames[0]), menuONames);
+}
+
 void InitPauseScreen()
 {
 	// Make the options match the configuration data
 	if (!LoadConfigData(GetConf()))
 		DefaultConfigData(GetConf());
 
-	add_pause_entry(&options_main, setting_pausetext_resume, Callback_Resume, NULL, NULL, 0, FALSE, &num_entries_added_main);
-	add_pause_entry(&options_main, setting_pausetext_reset, Callback_Reset, NULL, NULL, 0, FALSE, &num_entries_added_main);
-	add_pause_entry(&options_main, setting_pausetext_options, Callback_Options, NULL, NULL, 0, FALSE, &num_entries_added_main);
-	add_pause_entry(&options_main, setting_pausetext_quit, Callback_Quit, NULL, NULL, 0, FALSE, &num_entries_added_main);
-	add_pause_entry(&options_menu_o, setting_pausetext_resolution, Callback_Resolution, GetConf(), NULL, 0, FALSE, &num_entries_added_menu);
-	add_pause_entry(&options_menu_o, setting_pausetext_gamepad_enabled, Callback_ControllerEnabled, GetConf(), NULL, 0, FALSE, &num_entries_added_menu);
+	add_pause_entry(&options_main, mainMenuNames[0], Callback_Resume, NULL, NULL, 0, FALSE, &num_entries_added_main);
+	add_pause_entry(&options_main, mainMenuNames[1], Callback_Reset, NULL, NULL, 0, FALSE, &num_entries_added_main);
+	add_pause_entry(&options_main, mainMenuNames[2], Callback_Options, NULL, NULL, 0, FALSE, &num_entries_added_main);
+	add_pause_entry(&options_main, mainMenuNames[3], Callback_Quit, NULL, NULL, 0, FALSE, &num_entries_added_main);
+	add_pause_entry(&options_menu_o, menuONames[0], Callback_Resolution, GetConf(), NULL, 0, FALSE, &num_entries_added_menu);
+	add_pause_entry(&options_menu_o, menuONames[1], Callback_ControllerEnabled, GetConf(), NULL, 0, FALSE, &num_entries_added_menu);
 }
 
 int Call_Pause(void)
 {
 	OptionsMenu options_menu = {
-		setting_pausetext_paused,
+		GetLangString_Char("pausemenu_paused", setting_pausetext_paused),
 		NULL,
 		options_main,
 		num_entries_added_main,

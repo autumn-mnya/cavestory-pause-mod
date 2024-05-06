@@ -10,6 +10,7 @@
 #include "PauseScreen.h"
 
 #include "AutPI.h"
+#include "API_Lang.h"
 
 void InitSettings()
 {
@@ -36,12 +37,23 @@ void InitSettings()
 	setting_pausetext_unsaved_progress = ModLoader_GetSettingString("Progress Text", "Unsaved progress will be lost!");
 }
 
+void ReleaseData()
+{
+	if (autpiDLL != nullptr)
+		free(autpiDLL);
+	if (langDLL != nullptr)
+		free(langDLL);
+}
+
 void InitMod(void)
 {
 	LoadAutPiDll();
+	LoadLangDLL();
+	RegisterReleaseElement(ReleaseData);
 	InitSettings();
-	RegisterPreModeElement(InitPauseScreen);
+	RegisterPrePreModeElement(InitPauseScreen);
 	
 	ModLoader_WriteJump((void*)0x40DD70, (void*)Call_Pause);
-	// ModLoader_WriteJump((void*)0x412320, (void*)ExampleFunction);
+
+	// printf("%s\n", GetLangString_Char("caveStory", "CaveStory"));
 }

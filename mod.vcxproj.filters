@@ -6,6 +6,7 @@
     <ClCompile Include="src\AutPI.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\PauseScreen.cpp" />
+    <ClCompile Include="src\API_Lang.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cave_story.h" />
@@ -15,5 +16,6 @@
     <ClInclude Include="src\AutPI.h" />
     <ClInclude Include="src\Config.h" />
     <ClInclude Include="src\PauseScreen.h" />
+    <ClInclude Include="src\API_Lang.h" />
   </ItemGroup>
 </Project>

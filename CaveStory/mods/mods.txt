@@ -1,3 +1,4 @@
 autpi
+lang
 pause
 graphics_enhancement

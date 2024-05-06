@@ -82,6 +82,8 @@ extern "C" __declspec(dllexport) size_t* GetNumEntriesAddedMenu();
 extern "C" __declspec(dllexport) void add_pause_entry(Option** options_ptr, const char* name, int (*callback)(OptionsMenu* parent_menu, size_t this_option, CallbackAction action), void* user_data, const char* value_string, long value, BOOL disabled, size_t* num_entries_added);
 extern "C" __declspec(dllexport) void RegisterSaveConfigElement(SaveConfigElementHandler handler);
 extern "C" __declspec(dllexport) int EnterOptionsMenu(OptionsMenu * options_menu, size_t selected_option);
+extern "C" __declspec(dllexport) void ReloadOptionMenuNames(Option* options, size_t total_options, const char** names);
+extern "C" __declspec(dllexport) void ReloadOptionsMenuDefault();
 
 void InitPauseScreen();
 int Call_Pause(void);

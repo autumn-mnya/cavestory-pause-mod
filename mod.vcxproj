@@ -87,6 +87,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\API_Lang.cpp" />
     <ClCompile Include="src\AutPI.cpp" />
     <ClCompile Include="src\Config.cpp" />
     <ClCompile Include="src\Main.cpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="src\\mod_loader.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\API_Lang.h" />
     <ClInclude Include="src\AutPI.h" />
     <ClInclude Include="src\cave_story.h" />
     <ClInclude Include="src\Config.h" />

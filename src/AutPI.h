@@ -13,13 +13,14 @@ void AutPI_AddBoss(BOSSFUNCTION func, char* author, char* name);
 void AutPI_AddCaret(CARETFUNCTION func, char* author, char* name);
 
 // Game()
-typedef void (*OpeningBelowFadeElementHandler)();
-typedef void (*OpeningAboveFadeElementHandler)();
+typedef void (*PrePreModeElementHandler)();
+typedef void (*PreModeElementHandler)();
+typedef void (*ReleaseElementHandler)();
 // GetTrg()
 typedef void (*GetTrgElementHandler)();
 // ModeOpening()
-typedef void (*PreModeElementHandler)();
-typedef void (*ReleaseElementHandler)();
+typedef void (*OpeningBelowFadeElementHandler)();
+typedef void (*OpeningAboveFadeElementHandler)();
 typedef void (*OpeningBelowTextBoxElementHandler)();
 typedef void (*OpeningAboveTextBoxElementHandler)();
 typedef void (*OpeningEarlyActionElementHandler)();
@@ -69,6 +70,7 @@ void LoadAutPiDll();
 void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name);
 
 // Game() API
+void RegisterPrePreModeElement(PrePreModeElementHandler handler);
 void RegisterPreModeElement(PreModeElementHandler handler);
 void RegisterReleaseElement(ReleaseElementHandler handler);
 // GetTrg() API

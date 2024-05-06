@@ -83,6 +83,7 @@ void LoadAutPiDll()
 }
 
 
+std::vector<PrePreModeElementHandler> prepremodeElementHandlers;
 std::vector<PreModeElementHandler> premodeElementHandlers;
 std::vector<ReleaseElementHandler> releaseElementHandlers;
 
@@ -134,6 +135,11 @@ std::vector<LuaMetadataElementHandler> luametadataElementHandlers;
 std::vector<LuaFuncElementHandler> luafuncElementHandlers;
 
 // Game() API
+
+void RegisterPrePreModeElement(PrePreModeElementHandler handler)
+{
+    RegisterElement(prepremodeElementHandlers, "RegisterPrePreModeElement", reinterpret_cast<void (*)()>(handler));
+}
 
 void RegisterPreModeElement(PreModeElementHandler handler)
 {
