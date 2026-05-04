@@ -6,12 +6,10 @@
 #include "mod_loader.h"
 #include "cave_story.h"
 
-HMODULE autpiDLL = nullptr;  // Global variable
+HMODULE autpiDLL = nullptr;
 
-// Function pointer for dynamically loaded functions
 typedef void (*RegisterElementFunc)(void (*)());
 
-// Function to register an element handler
 void RegisterElement(std::vector<void (*)()>& handlers, const char* functionName, void (*handler)())
 {
     if (autpiDLL != nullptr) {
@@ -25,7 +23,6 @@ void RegisterElement(std::vector<void (*)()>& handlers, const char* functionName
         }
         else {
             std::cerr << "Failed to get the function pointer for " << functionName << "\n";
-            // You might want to handle the error appropriately.
         }
     }
 }
@@ -72,266 +69,157 @@ void AutPI_AddEntity(NPCFUNCTION func, char* author, char* name)
     addEntityFunc(func, author, name);
 }
 
-// Function to load autpi.dll
 void LoadAutPiDll()
 {
     autpiDLL = LoadLibrary("autpi.dll");
     if (autpiDLL == nullptr) {
         std::cerr << "Failed to load autpi.dll\n";
-        // You might want to handle the error appropriately, e.g., throw an exception or return early.
     }
 }
 
+DEFINE_REGISTER_FUNCTION(PreModeElementHandler, PreModeElement)
+DEFINE_REGISTER_FUNCTION(ReleaseElementHandler, ReleaseElement)
+DEFINE_REGISTER_FUNCTION(GetTrgElementHandler, GetTrgElement)
+DEFINE_REGISTER_FUNCTION(OpeningBelowFadeElementHandler, OpeningBelowFadeElement)
+DEFINE_REGISTER_FUNCTION(OpeningAboveFadeElementHandler, OpeningAboveFadeElement)
+DEFINE_REGISTER_FUNCTION(OpeningBelowTextBoxElementHandler, OpeningBelowTextBoxElement)
+DEFINE_REGISTER_FUNCTION(OpeningAboveTextBoxElementHandler, OpeningAboveTextBoxElement)
+DEFINE_REGISTER_FUNCTION(OpeningEarlyActionElementHandler, OpeningEarlyActionElement)
+DEFINE_REGISTER_FUNCTION(OpeningActionElementHandler, OpeningActionElement)
+DEFINE_REGISTER_FUNCTION(OpeningInitElementHandler, OpeningInitElement)
+DEFINE_REGISTER_FUNCTION(OpeningBelowPutCaretElementHandler, OpeningBelowPutCaretElement)
+DEFINE_REGISTER_FUNCTION(OpeningAbovePutCaretElementHandler, OpeningAbovePutCaretElement)
+DEFINE_REGISTER_FUNCTION(MOBelowPutFPSElementHandler, ModeOpeningBelowPutFPSElement)
+DEFINE_REGISTER_FUNCTION(MOAbovePutFPSElementHandler, ModeOpeningAbovePutFPSElement)
+DEFINE_REGISTER_FUNCTION(OpeningBelowPutBackElementHandler, OpeningBelowPutBackElement)
+DEFINE_REGISTER_FUNCTION(OpeningAbovePutBackElementHandler, OpeningAbovePutBackElement)
+DEFINE_REGISTER_FUNCTION(OpeningBelowPutStage_BackElementHandler, OpeningBelowPutStage_BackElement)
+DEFINE_REGISTER_FUNCTION(OpeningAbovePutStage_BackElementHandler, OpeningAbovePutStage_BackElement)
+DEFINE_REGISTER_FUNCTION(OpeningBelowPutStage_FrontElementHandler, OpeningBelowPutStage_FrontElement)
+DEFINE_REGISTER_FUNCTION(OpeningAbovePutStage_FrontElementHandler, OpeningAbovePutStage_FrontElement)
+DEFINE_REGISTER_FUNCTION(TitleInitElementHandler, TitleInitElement)
+DEFINE_REGISTER_FUNCTION(TitleActionElementHandler, TitleActionElement)
+DEFINE_REGISTER_FUNCTION(TitleBelowCounterElementHandler, TitleBelowCounterElement)
+DEFINE_REGISTER_FUNCTION(MTBelowPutFPSElementHandler, ModeTitleBelowPutFPSElement)
+DEFINE_REGISTER_FUNCTION(MTAbovePutFPSElementHandler, ModeTitleAbovePutFPSElement)
+DEFINE_REGISTER_FUNCTION(PlayerHudElementHandler, PlayerHudElement)
+DEFINE_REGISTER_FUNCTION(CreditsHudElementHandler, CreditsHudElement)
+DEFINE_REGISTER_FUNCTION(BelowFadeElementHandler, BelowFadeElement)
+DEFINE_REGISTER_FUNCTION(AboveFadeElementHandler, AboveFadeElement)
+DEFINE_REGISTER_FUNCTION(BelowTextBoxElementHandler, BelowTextBoxElement)
+DEFINE_REGISTER_FUNCTION(AboveTextBoxElementHandler, AboveTextBoxElement)
+DEFINE_REGISTER_FUNCTION(BelowPlayerElementHandler, BelowPlayerElement)
+DEFINE_REGISTER_FUNCTION(AbovePlayerElementHandler, AbovePlayerElement)
+DEFINE_REGISTER_FUNCTION(EarlyActionElementHandler, EarlyActionElement)
+DEFINE_REGISTER_FUNCTION(ActionElementHandler, ActionElement)
+DEFINE_REGISTER_FUNCTION(CreditsActionElementHandler, CreditsActionElement)
+DEFINE_REGISTER_FUNCTION(InitElementHandler, InitElement)
+DEFINE_REGISTER_FUNCTION(BelowPutCaretElementHandler, BelowPutCaretElement)
+DEFINE_REGISTER_FUNCTION(AbovePutCaretElementHandler, AbovePutCaretElement)
+DEFINE_REGISTER_FUNCTION(MABelowPutFPSElementHandler, ModeActionBelowPutFPSElement)
+DEFINE_REGISTER_FUNCTION(MAAbovePutFPSElementHandler, ModeActionAbovePutFPSElement)
+DEFINE_REGISTER_FUNCTION(BelowPutStage_BackElementHandler, BelowPutStage_BackElement)
+DEFINE_REGISTER_FUNCTION(AbovePutStage_BackElementHandler, AbovePutStage_BackElement)
+DEFINE_REGISTER_FUNCTION(BelowPutStage_FrontElementHandler, BelowPutStage_FrontElement)
+DEFINE_REGISTER_FUNCTION(AbovePutStage_FrontElementHandler, AbovePutStage_FrontElement)
+DEFINE_REGISTER_FUNCTION(BelowPutBackElementHandler, BelowPutBackElement)
+DEFINE_REGISTER_FUNCTION(AbovePutBackElementHandler, AbovePutBackElement)
+DEFINE_REGISTER_FUNCTION(SaveProfilePreCloseElementHandler, SaveProfilePreCloseElement)
+DEFINE_REGISTER_FUNCTION(SaveProfilePostCloseElementHandler, SaveProfilePostCloseElement)
+DEFINE_REGISTER_FUNCTION(LoadProfilePreCloseElementHandler, LoadProfilePreCloseElement)
+DEFINE_REGISTER_FUNCTION(LoadProfilePostCloseElementHandler, LoadProfilePostCloseElement)
+DEFINE_REGISTER_FUNCTION(LoadProfileInitElementHandler, LoadProfileInitElement)
+DEFINE_REGISTER_FUNCTION(InitializeGameInitElementHandler, InitializeGameInitElement)
+DEFINE_REGISTER_FUNCTION(PutFPSElementHandler, PutFPSElement)
+DEFINE_REGISTER_FUNCTION(TextScriptSVPElementHandler, SVPElement)
+DEFINE_REGISTER_FUNCTION(TransferStageInitElementHandler, TransferStageInitElement)
 
-std::vector<PreModeElementHandler> premodeElementHandlers;
-std::vector<ReleaseElementHandler> releaseElementHandlers;
-
-std::vector<GetTrgElementHandler> gettrgElementHandlers;
-
-std::vector<OpeningBelowFadeElementHandler> Opening_belowfadeElementHandlers;
-std::vector<OpeningAboveFadeElementHandler> Opening_abovefadeElementHandlers;
-std::vector<OpeningBelowTextBoxElementHandler> Opening_belowtextboxElementHandlers;
-std::vector<OpeningAboveTextBoxElementHandler> Opening_abovetextBoxElementHandlers;
-std::vector<OpeningEarlyActionElementHandler> Opening_earlyactionElementHandlers;
-std::vector<OpeningActionElementHandler> Opening_actionElementHandlers;
-std::vector<OpeningInitElementHandler> Opening_initElementHandlers;
-std::vector<OpeningBelowPutCaretElementHandler> Opening_belowputcaretElementHandlers;
-std::vector<OpeningAbovePutCaretElementHandler> Opening_aboveputcaretElementHandlers;
-
-std::vector<TitleInitElementHandler> Title_initElementHandlers;
-std::vector<TitleActionElementHandler> Title_actionElementHandlers;
-std::vector<TitleBelowCounterElementHandler> Title_belowcounterElementHandlers;
-
-std::vector<PlayerHudElementHandler> playerhudElementHandlers;
-std::vector<CreditsHudElementHandler> creditshudElementHandlers;
-std::vector<BelowFadeElementHandler> belowfadeElementHandlers;
-std::vector<AboveFadeElementHandler> abovefadeElementHandlers;
-std::vector<BelowTextBoxElementHandler> belowtextboxElementHandlers;
-std::vector<AboveTextBoxElementHandler> abovetextboxElementHandlers;
-std::vector<BelowPlayerElementHandler> belowplayerElementHandlers;
-std::vector<AbovePlayerElementHandler> aboveplayerElementHandlers;
-std::vector<EarlyActionElementHandler> earlyactionElementHandlers;
-std::vector<ActionElementHandler> actionElementHandlers;
-std::vector<CreditsActionElementHandler> creditsactionElementHandlers;
-std::vector<InitElementHandler> initElementHandlers;
-std::vector<BelowPutCaretElementHandler> belowputcaretElementHandlers;
-std::vector<AbovePutCaretElementHandler> aboveputcaretElementHandlers;
-
-std::vector<SaveProfilePreWriteElementHandler> saveprofileprewriteElementHandlers;
-std::vector<SaveProfilePostWriteElementHandler> saveprofilepostwriteElementHandlers;
-std::vector<LoadProfilePreCloseElementHandler> loadprofileprecloseElementHandlers;
-std::vector<LoadProfilePostCloseElementHandler> loadprofilepostcloseElementHandlers;
-std::vector<InitializeGameInitElementHandler> intializegameElementHandlers;
-
-std::vector<PutFPSElementHandler> putfpsElementHandlers;
-
-std::vector<TextScriptSVPElementHandler> textscriptsvpElementHandlers;
-
-std::vector<TransferStageInitElementHandler> transferstageinitElementHandlers;
-
-std::vector<LuaPreGlobalModCSElementHandler> preglobalmodcsElementHandlers;
-std::vector<LuaMetadataElementHandler> luametadataElementHandlers;
-std::vector<LuaFuncElementHandler> luafuncElementHandlers;
-
-// Game() API
-
-void RegisterPreModeElement(PreModeElementHandler handler)
+BOOL LoadStageTable(char* name)
 {
-    RegisterElement(premodeElementHandlers, "RegisterPreModeElement", reinterpret_cast<void (*)()>(handler));
+    typedef BOOL(*funcdef)(char*);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "LoadStageTable"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for LoadStageTable\n";
+        return FALSE;
+    }
+
+    return func(name);
 }
 
-void RegisterReleaseElement(ReleaseElementHandler handler)
+BOOL ReloadModScript()
 {
-    RegisterElement(releaseElementHandlers, "RegisterReleaseElement", reinterpret_cast<void (*)()>(handler));
+    typedef BOOL(*funcdef)();
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "ReloadModScript"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for ReloadModScript\n";
+        return FALSE;
+    }
+
+    return func();
 }
 
-// GetTrg() API
-
-void RegisterGetTrgElement(GetTrgElementHandler handler)
+unsigned char ModLoader_GetByte(void* address)
 {
-    RegisterElement(gettrgElementHandlers, "RegisterGetTrgElement", reinterpret_cast<void (*)()>(handler));
+    typedef unsigned char (*funcdef)(void* address);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "ModLoader_GetByte"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for ModLoader_GetByte\n";
+        return FALSE;
+    }
+
+    return func(address);
 }
 
-// ModeOpening() API
-
-void RegisterOpeningBelowFadeElement(OpeningBelowFadeElementHandler handler)
+unsigned short ModLoader_GetWord(void* address)
 {
-    RegisterElement(Opening_belowfadeElementHandlers, "RegisterOpeningBelowFadeElement", reinterpret_cast<void (*)()>(handler));
+    typedef unsigned short (*funcdef)(void* address);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "ModLoader_GetWord"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for ModLoader_GetWord\n";
+        return FALSE;
+    }
+
+    return func(address);
 }
 
-void RegisterOpeningAboveFadeElement(OpeningAboveFadeElementHandler handler)
+unsigned long ModLoader_GetLong(void* address)
 {
-    RegisterElement(Opening_abovefadeElementHandlers, "RegisterOpeningAboveFadeElement", reinterpret_cast<void (*)()>(handler));
+    typedef unsigned long (*funcdef)(void* address);
+
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "ModLoader_GetLong"));
+
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for ModLoader_GetLong\n";
+        return FALSE;
+    }
+
+    return func(address);
 }
 
-void RegisterOpeningBelowTextBoxElement(OpeningBelowTextBoxElementHandler handler)
+char* GetCustomSaveName()
 {
-    RegisterElement(Opening_belowtextboxElementHandlers, "RegisterOpeningBelowTextBoxElement", reinterpret_cast<void (*)()>(handler));
-}
+    typedef char*(*funcdef)();
 
-void RegisterOpeningAboveTextBoxElement(OpeningAboveTextBoxElementHandler handler)
-{
-    RegisterElement(Opening_abovetextBoxElementHandlers, "RegisterOpeningAboveTextBoxElement", reinterpret_cast<void (*)()>(handler));
-}
+    funcdef func = reinterpret_cast<funcdef>(
+        GetProcAddress(autpiDLL, "GetCustomSaveName"));
 
-void RegisterOpeningEarlyActionElement(OpeningEarlyActionElementHandler handler)
-{
-    RegisterElement(Opening_earlyactionElementHandlers, "RegisterOpeningEarlyActionElement", reinterpret_cast<void (*)()>(handler));
-}
+    if (func == nullptr) {
+        std::cerr << "Failed to get the function pointer for GetCustomSaveName\n";
+        return "autpi-dll-failure.dat";
+    }
 
-void RegisterOpeningActionElement(OpeningActionElementHandler handler)
-{
-    RegisterElement(Opening_actionElementHandlers, "RegisterOpeningActionElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterOpeningInitElement(OpeningInitElementHandler handler)
-{
-    RegisterElement(Opening_initElementHandlers, "RegisterOpeningInitElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterOpeningBelowPutCaretElement(OpeningBelowPutCaretElementHandler handler)
-{
-    RegisterElement(Opening_belowputcaretElementHandlers, "RegisterOpeningPutCaretElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterOpeningAbovePutCaretElement(OpeningAbovePutCaretElementHandler handler)
-{
-    RegisterElement(Opening_aboveputcaretElementHandlers, "RegisterOpeningAbovePutCaretElement", reinterpret_cast<void (*)()>(handler));
-}
-
-// ModeTitleAPI
-
-void RegisterTitleInitElement(TitleInitElementHandler handler)
-{
-    RegisterElement(Title_initElementHandlers, "RegisterTitleInitElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterTitleActionElement(TitleActionElementHandler handler)
-{
-    RegisterElement(Title_actionElementHandlers, "RegisterTitleActionElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterTitleBelowCounterElement(TitleBelowCounterElementHandler handler)
-{
-    RegisterElement(Title_belowcounterElementHandlers, "RegisterTitleBelowCounterElement", reinterpret_cast<void (*)()>(handler));
-}
-
-// ModeActionAPI
-
-void RegisterPlayerHudElement(PlayerHudElementHandler handler)
-{
-    RegisterElement(playerhudElementHandlers, "RegisterPlayerHudElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterCreditsHudElement(CreditsHudElementHandler handler)
-{
-    RegisterElement(creditshudElementHandlers, "RegisterCreditsHudElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterBelowFadeElement(BelowFadeElementHandler handler)
-{
-    RegisterElement(belowfadeElementHandlers, "RegisterBelowFadeElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterAboveFadeElement(AboveFadeElementHandler handler)
-{
-    RegisterElement(abovefadeElementHandlers, "RegisterAboveFadeElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterBelowTextBoxElement(BelowTextBoxElementHandler handler)
-{
-    RegisterElement(belowtextboxElementHandlers, "RegisterBelowTextBoxElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterAboveTextBoxElement(AboveTextBoxElementHandler handler)
-{
-    RegisterElement(abovetextboxElementHandlers, "RegisterAboveTextBoxElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterBelowPlayerElement(BelowPlayerElementHandler handler)
-{
-    RegisterElement(belowplayerElementHandlers, "RegisterBelowPlayerElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterAbovePlayerElement(AbovePlayerElementHandler handler)
-{
-    RegisterElement(aboveplayerElementHandlers, "RegisterAbovePlayerElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterEarlyActionElement(EarlyActionElementHandler handler)
-{
-    RegisterElement(earlyactionElementHandlers, "RegisterEarlyActionElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterActionElement(ActionElementHandler handler)
-{
-    RegisterElement(actionElementHandlers, "RegisterActionElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterCreditsActionElement(CreditsActionElementHandler handler)
-{
-    RegisterElement(creditsactionElementHandlers, "RegisterCreditsActionElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterInitElement(InitElementHandler handler)
-{
-    RegisterElement(initElementHandlers, "RegisterInitElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterBelowPutCaretElement(BelowPutCaretElementHandler handler)
-{
-    RegisterElement(belowputcaretElementHandlers, "RegisterBelowPutCaretElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterAbovePutCaretElement(AbovePutCaretElementHandler handler)
-{
-    RegisterElement(aboveputcaretElementHandlers, "RegisterAbovePutCaretElement", reinterpret_cast<void (*)()>(handler));
-}
-
-// Profile API
-
-void RegisterSaveProfilePreWriteElement(SaveProfilePreWriteElementHandler handler)
-{
-    RegisterElement(saveprofileprewriteElementHandlers, "RegisterSaveProfilePreWriteElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterSaveProfilePostWriteElement(SaveProfilePostWriteElementHandler handler)
-{
-    RegisterElement(saveprofilepostwriteElementHandlers, "RegisterSaveProfilePostWriteElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterLoadProfilePreCloseElement(LoadProfilePreCloseElementHandler handler)
-{
-    RegisterElement(loadprofileprecloseElementHandlers, "RegisterLoadProfilePreCloseElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterLoadProfilePostCloseElement(LoadProfilePostCloseElementHandler handler)
-{
-    RegisterElement(loadprofilepostcloseElementHandlers, "RegisterLoadProfilePostCloseElement", reinterpret_cast<void (*)()>(handler));
-}
-
-void RegisterInitializeGameInitElement(InitializeGameInitElementHandler handler)
-{
-    RegisterElement(intializegameElementHandlers, "RegisterInitializeGameInitElement", reinterpret_cast<void (*)()>(handler));
-}
-
-// PutFPS API
-
-void RegisterPutFPSElement(PutFPSElementHandler handler)
-{
-    RegisterElement(putfpsElementHandlers, "RegisterPutFPSElement", reinterpret_cast<void (*)()>(handler));
-}
-
-// TextScript API
-
-void RegisterSVPElement(TextScriptSVPElementHandler handler)
-{
-    RegisterElement(textscriptsvpElementHandlers, "RegisterSVPElement", reinterpret_cast<void (*)()>(handler));
-}
-
-// TransferStage API
-
-void RegisterTransferStageInitElement(TransferStageInitElementHandler handler)
-{
-    RegisterElement(transferstageinitElementHandlers, "RegisterTransferStageInitElement", reinterpret_cast<void (*)()>(handler));
+    return func();
 }

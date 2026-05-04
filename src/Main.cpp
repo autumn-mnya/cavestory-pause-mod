@@ -43,5 +43,4 @@ void InitMod(void)
 	RegisterPreModeElement(InitPauseScreen);
 	
 	ModLoader_WriteJump((void*)0x40DD70, (void*)Call_Pause);
-	// ModLoader_WriteJump((void*)0x412320, (void*)ExampleFunction);
 }

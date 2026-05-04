@@ -1,3 +1,2 @@
 autpi
 pause
-graphics_enhancement

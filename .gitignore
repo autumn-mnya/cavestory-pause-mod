@@ -1,5 +1,6 @@
 /.git
 /.vs
+/build*
 /Debug
 /Release
 /ZZ-FinalRelease
@@ -16,3 +17,5 @@ CaveStory/Profile.dat
 CaveStory/window.rect
 !CaveStory/mods/autpi/autpi.dll
 !CaveStory/mods/pause/pause.dll
+!CaveStory/mods/mod_loader.dll
+!CaveStory/dsound.dll

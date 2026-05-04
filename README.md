@@ -1,12 +1,18 @@
-# Cave Story Mod Loader example mod
-This is an example mod that can be compiled using Visual Studio 2022 for making dll mods for Cave Story freeware, using [Clownacy's Mod Loader](https://github.com/Clownacy/Cave-Story-Mod-Loader/releases).
+# Pause Menu dll
+This is a dll hack for Cave Story freeware, made using [Clownacy's Mod Loader](https://github.com/Clownacy/Cave-Story-Mod-Loader/releases).
 
-You'll first need a copy of [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/). When you're installing it, go to the individual components tab and select the "C++ Windows XP Support for VS 2017 (v141) tools [Deprecated]".
+This pause menu originally came from CSE2-Enhanced and its forks, made by Clownacy.
 
-![v141 tools](WindowsXPSupport.png)
+# Building
 
-If you already have Visual Studio 2022, search your computer for "Visual Studio Installer", and click modify on Visual Studio 2022. Go to the invididual components tab, and select the "C++ Windows XP Support for VS 2017 (v141) tools [Deprecated]" like shown above.
+The recommended method of compiling this mod is to use [CMake](https://cmake.org/).
 
-After that's all installed, you should be able to just compile the dll using the mod.sln file, and test it just by opening the game.
+For windows users, I would recommend installing CMake, alongside __Visual Studio 2019__ or above. Install both, open "cmake-gui" if inexperienced, open the source code folder, and set a build directory. Configure it, and set the platform to "Win32". Generate after, and open the new `.sln` file in the build folder, and build!
 
-Note that anyone who plays mods using your dll should install the latest [vc_redist](https://aka.ms/vs/17/release/vc_redist.x86.exe) for x86 if they do not have it. It has to be x86, even if your computer is x64.
+# License
+
+A license for Clownacy's code can be found next to the dll when compiled, or in release builds.
+
+# Compatibility
+
+This dll should work for Windows 7+, but not XP or below.

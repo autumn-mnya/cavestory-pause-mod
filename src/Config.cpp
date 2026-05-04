@@ -1,4 +1,4 @@
-#include <Windows.h>
+#include <windows.h>
 #include <shlwapi.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -6,7 +6,7 @@
 #include <string.h>
 #include <string>
 
-#include "main.h"
+#include "Main.h"
 #include "Config.h"
 
 #include "mod_loader.h"
